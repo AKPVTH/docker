@@ -1,0 +1,76 @@
+version: '3.8'
+services:
+  ollama-deep-seek:
+    image: sloopstash/ollama:v${AIA_OLLAMA_VERSION}
+    entrypoint: /usr/bin/supervisord
+    command: "-c /etc/supervisord.conf"
+    volumes:
+      - ollama-deep-seek-model:/opt/ollama/model
+      - ollama-deep-seek-data:/opt/ollama/data
+      - ollama-deep-seek-log:/opt/ollama/log
+      - ${HOME_DIR}/workload/supervisor/conf/server.conf:/etc/supervisord.conf
+      - ${HOME_DIR}/workload/ollama/${AIA_OLLAMA_VERSION}/conf/supervisor.ini:/opt/ollama/system/supervisor.ini
+    networks:
+      - common
+  ollama-gemma:
+    image: sloopstash/ollama:v${AIA_OLLAMA_VERSION}
+    entrypoint: /usr/bin/supervisord
+    command: "-c /etc/supervisord.conf"
+    volumes:
+      - ollama-gemma-model:/opt/ollama/model
+      - ollama-gemma-data:/opt/ollama/data
+      - ollama-gemma-log:/opt/ollama/log
+      - ${HOME_DIR}/workload/supervisor/conf/server.conf:/etc/supervisord.conf
+      - ${HOME_DIR}/workload/ollama/${AIA_OLLAMA_VERSION}/conf/supervisor.ini:/opt/ollama/system/supervisor.ini
+    networks:
+      - common
+  ollama-llama:
+    image: sloopstash/ollama:v${AIA_OLLAMA_VERSION}
+    entrypoint: /usr/bin/supervisord
+    command: "-c /etc/supervisord.conf"
+    volumes:
+      - ollama-llama-model:/opt/ollama/model
+      - ollama-llama-data:/opt/ollama/data
+      - ollama-llama-log:/opt/ollama/log
+      - ${HOME_DIR}/workload/supervisor/conf/server.conf:/etc/supervisord.conf
+      - ${HOME_DIR}/workload/ollama/${AIA_OLLAMA_VERSION}/conf/supervisor.ini:/opt/ollama/system/supervisor.ini
+    networks:
+      - common
+volumes:
+  ollama-deep-seek-model:
+    driver: local
+  ollama-deep-seek-data:
+    driver: local
+  ollama-deep-seek-log:
+    driver: local
+  ollama-deep-seek-coder-model:
+    driver: local
+  ollama-deep-seek-coder-data:
+    driver: local
+  ollama-deep-seek-coder-log:
+    driver: local
+  ollama-gemma-model:
+    driver: local
+  ollama-gemma-data:
+    driver: local
+  ollama-gemma-log:
+    driver: local
+  ollama-llama-model:
+    driver: local
+  ollama-llama-data:
+    driver: local
+  ollama-llama-log:
+    driver: local
+  ollama-qwen-coder-model:
+    driver: local
+  ollama-qwen-coder-data:
+    driver: local
+  ollama-qwen-coder-log:
+    driver: local
+networks:
+  common:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${AIA_OLLAMA_NETWORK}
